@@ -12,4 +12,4 @@ if [[ ! $(command -v "docker") ]]; then
 	exit 1
 fi
 
-${runner} run --rm -it ghcr.io/atomicptr/php-dap:latest ${@}
+${runner} run --rm --init --network=host ghcr.io/atomicptr/php-dap:latest ${@}

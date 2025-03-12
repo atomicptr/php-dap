@@ -7,7 +7,7 @@ A containerized wrapper to use the debug adapter from [vscode-php-debug](https:/
 You either use the php-dap bash script available in this repository or podman/docker directly:
 
 ```bash
-$ docker run --rm -it ghcr.io/atomicptr/php-dap:latest --server=9090
+$ docker run --rm --init --network=host ghcr.io/atomicptr/php-dap:latest
 ```
 
 ### Helix
@@ -21,8 +21,9 @@ name = "php"
 [language.debugger]
 name = "php-dap"
 transport = "tcp"
-command = "php-dap"
-args = []
+command = "docker"
+args = ["run", "--rm", "--init", "--network=host", "ghcr.io/atomicptr/php-dap:latest"]
+port-arg = "--server={}"
 
 [[language.debugger.templates]]
 name = "Listen for Xdebug"

@@ -1,6 +1,4 @@
-ARG BUN_VERSION="1"
-
-FROM oven/bun:${BUN_VERSION}-alpine
+FROM node:22-alpine3.21
 
 WORKDIR /app
 
@@ -9,6 +7,7 @@ RUN git clone https://github.com/xdebug/vscode-php-debug.git
 
 WORKDIR /app/vscode-php-debug
 
-RUN bun install
+RUN npm install
+RUN npm run build
 
-ENTRYPOINT ["bun", "/app/vscode-php-debug/src/phpDebug.ts"]
+ENTRYPOINT ["node", "out/phpDebug.js"]
