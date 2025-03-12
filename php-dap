@@ -1,0 +1,15 @@
+#/usr/bin/env bash
+set -e
+
+runner="podman"
+
+if [[ ! $(command -v "podman") ]]; then
+	runner="docker"
+fi
+
+if [[ ! $(command -v "docker") ]]; then
+	echo "php-dap requires either 'podman' or 'docker' to be available"
+	exit 1
+fi
+
+${runner} run --rm -it ghcr.io/atomicptr/php-dap:latest ${@}
