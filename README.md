@@ -10,6 +10,42 @@ You either use the php-dap bash script available in this repository or podman/do
 $ docker run --rm --network=host ghcr.io/atomicptr/php-dap:latest
 ```
 
+### Neovim
+
+Assuming you are using [nvim-dap](https://github.com/mfussenegger/nvim-dap)
+
+```lua
+local dap = require "dap"
+
+dap.adapters.php = {
+    type = "server",
+    port = "${port}",
+    executable = {
+        command = "docker",
+        args = { "run", "--rm", "--network=host", "ghcr.io/atomicptr/php-dap:latest", "--server=${port}" },
+    },
+}
+
+dap.configurations.php = {
+    {
+        type = "php",
+        request = "launch",
+        name = "Listen for Xdebug",
+        port = 9003,
+
+        -- if you are using xdebug from inside a container (e.g. using ddev)
+        -- you need to setup pathMappings
+        pathMappings = function()
+            local root = vim.fs.root(0, { "composer.json", ".git" })
+
+            return {
+                ["/var/www/html"] = root,
+            }
+        end,
+    },
+}
+```
+
 ### Helix
 
 In your Helix languages.toml add this:
